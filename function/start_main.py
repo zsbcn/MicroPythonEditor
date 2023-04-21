@@ -101,6 +101,10 @@ class MyMain(ThonnyMainWindow):
             temp_file.write(temp_content)
 
     def update_file(self, new_content: str):
+        """
+        保存文件时检查文件是否被打开，更新tab相关数据
+        :param new_content: 待保存的最新的文本内容
+        """
         file_path, _ = QFileDialog.getOpenFileName(self, '保存文件')
         if file_path in self.tab_fileNames and file_path != self.tab_widget.tabText(self.tab_widget.currentIndex()):
             QMessageBox.warning(self, '提示', '文件已打开，无法保存')
@@ -112,6 +116,9 @@ class MyMain(ThonnyMainWindow):
             self.tab_fileNames[self.tab_widget.currentIndex()] = file_path
 
     def reload_file(self):
+        """
+        切换Tab页时检查文件是否更新，提示是否需要加载新的文件内容
+        """
         current_file_name = self.tab_widget.tabText(self.tab_widget.currentIndex())
         current_content = self.tab_objects[self.tab_widget.currentIndex()].text()
         if is_different(current_file_name, current_content):
