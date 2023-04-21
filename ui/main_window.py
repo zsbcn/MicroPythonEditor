@@ -8,10 +8,12 @@
 # version    ：python 3.10
 # Description：
 """
+import os
 import sys
 from abc import abstractmethod
 from typing import List
 
+from PyQt6 import QtGui
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import QMainWindow, QApplication, QTabWidget, QFrame, QVBoxLayout, QMenu
 
@@ -73,8 +75,8 @@ class ThonnyMainWindow(QMainWindow):
         self.v_layout = QVBoxLayout()
         self.setLayout(self.v_layout)
 
-        self.frame_1 = QFrame()
-        self.frame_1.resize(200, 200)
+        # self.frame_1 = QFrame()
+        # self.frame_1.resize(200, 200)
 
         self.tab_widget = QTabWidget()
         self.v_layout.addWidget(self.tab_widget)
@@ -101,6 +103,15 @@ class ThonnyMainWindow(QMainWindow):
     @abstractmethod
     def new_tab_callback(self, tab_name: str):
         pass
+
+    def close(self) -> None:
+        super().close()
+
+    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
+        super().closeEvent(a0)
+        for file in os.listdir():
+            if file.endswith('.temp'):
+                os.remove(file)
 
 
 if __name__ == '__main__':
