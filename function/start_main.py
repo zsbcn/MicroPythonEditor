@@ -32,12 +32,18 @@ class MyMain(ThonnyMainWindow):
                                                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
                                                 | QMessageBox.StandardButton.Cancel,
                                                 QMessageBox.StandardButton.Yes)
-                print(reply)
                 self.tab_widget.setCurrentWidget(self.tab_objects[self.tab_fileNames.index(file_name)])
             else:
                 self.new_tab_callback(file_name)
                 with open(file_name, mode='r', encoding='utf-8') as f:
                     self.tab_widget.currentWidget().setText(f.read())
+
+    def save_file_callback(self, event):
+        if self.tab_fileNames[self.tab_widget.currentIndex()] == 'New File':
+            file_path, file_type = QFileDialog.getSaveFileName(self, '保存文件', '.')
+            with open(file_path, mode='w', encoding='utf-8') as f:
+                f.write(self.tab_objects[self.tab_widget.currentIndex()].text())
+            self.tab_widget.setTabText(file_path)
 
     def close_tab_callback(self, index):
         self.tab_widget.removeTab(index)

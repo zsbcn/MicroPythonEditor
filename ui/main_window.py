@@ -15,13 +15,13 @@ from typing import List
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import QMainWindow, QApplication, QTabWidget, QFrame, QVBoxLayout, QMenu
 
-# from ui.ui_editor import MyEditor
+from ui.ui_editor import MyEditor
 
 
 class ThonnyMainWindow(QMainWindow):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-        self.tab_objects: List = []
+        self.tab_objects: List['MyEditor'] = []
         self.tab_fileNames: List[str] = []
         self.resize(self.width(), self.height())
 
@@ -45,6 +45,10 @@ class ThonnyMainWindow(QMainWindow):
         self.open_file = QAction(parent=self.menu)
         self.open_file.setText('打开')
 
+        # "文件-保存"菜单
+        self.save_file = QAction(parent=self.menu)
+        self.save_file.setText('保存')
+
         # “文件-关闭”菜单
         self.quite_exe = QAction(parent=self.menu)
         self.quite_exe.setText('关闭')
@@ -53,9 +57,11 @@ class ThonnyMainWindow(QMainWindow):
         self.menu.addAction(self.file.menuAction())
         self.file.addAction(self.new_file)
         self.file.addAction(self.open_file)
+        self.file.addAction(self.save_file)
         self.file.addAction(self.quite_exe)
         self.new_file.triggered.connect(self.new_file_callback)
         self.open_file.triggered.connect(self.open_file_callback)
+        self.save_file.triggered.connect(self.save_file_callback)
         self.quite_exe.triggered.connect(self.close)
 
         self.menu.addMenu('编辑')
@@ -82,6 +88,10 @@ class ThonnyMainWindow(QMainWindow):
 
     @abstractmethod
     def open_file_callback(self, event):
+        pass
+
+    @abstractmethod
+    def save_file_callback(self, event):
         pass
 
     @abstractmethod

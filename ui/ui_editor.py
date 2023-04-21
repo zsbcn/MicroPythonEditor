@@ -18,7 +18,7 @@ class MyEditor(QsciScintilla):
         super().__init__()
         self.setMarginType(0, QsciScintilla.MarginType.NumberMargin)
         self.setMarginLineNumbers(0, True)
-        self.setMarginWidth(0, 15)
+        self.setMarginWidth(0, 30)
         self.ctrlPressed = False
         self.__file_name = file_name
 
