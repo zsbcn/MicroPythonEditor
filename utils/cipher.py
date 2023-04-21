@@ -27,11 +27,14 @@ def is_different(temp_file_name, current_content):
     :param current_content: 新文本的内容
     :return: 没有变更：False; 变更：True
     """
-    with open(temp_file_name, mode='r', encoding='utf-8') as temp_file_handle:
-        if md5(temp_file_handle.read().encode('utf-8')).hexdigest() == md5(
-                current_content.encode('utf-8')).hexdigest():
-            return False
-        return True
+    try:
+        with open(temp_file_name, mode='r', encoding='utf-8') as temp_file_handle:
+            if md5(temp_file_handle.read().encode('utf-8')).hexdigest() == md5(
+                    current_content.encode('utf-8')).hexdigest():
+                return False
+            return True
+    except FileNotFoundError:
+        return False
 
 
 if __name__ == '__main__':

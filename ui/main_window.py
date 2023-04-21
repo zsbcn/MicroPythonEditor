@@ -15,7 +15,7 @@ from typing import List
 
 from PyQt6 import QtGui
 from PyQt6.QtGui import QAction
-from PyQt6.QtWidgets import QMainWindow, QApplication, QTabWidget, QFrame, QVBoxLayout, QMenu
+from PyQt6.QtWidgets import QMainWindow, QApplication, QVBoxLayout, QMenu, QTabWidget
 
 from ui.ui_editor import MyEditor
 
@@ -75,14 +75,12 @@ class ThonnyMainWindow(QMainWindow):
         self.v_layout = QVBoxLayout()
         self.setLayout(self.v_layout)
 
-        # self.frame_1 = QFrame()
-        # self.frame_1.resize(200, 200)
-
         self.tab_widget = QTabWidget()
         self.v_layout.addWidget(self.tab_widget)
         self.tab_widget.setTabsClosable(True)
         self.tab_widget.tabCloseRequested.connect(self.close_tab_callback)
         self.setCentralWidget(self.tab_widget)
+        self.tab_widget.currentChanged.connect(self.reload_file)
 
     @abstractmethod
     def new_file_callback(self, event):
@@ -102,6 +100,10 @@ class ThonnyMainWindow(QMainWindow):
 
     @abstractmethod
     def new_tab_callback(self, tab_name: str):
+        pass
+
+    @abstractmethod
+    def reload_file(self):
         pass
 
     def close(self) -> None:

@@ -102,7 +102,7 @@ class MyMain(ThonnyMainWindow):
 
     def update_file(self, new_content: str):
         file_path, _ = QFileDialog.getOpenFileName(self, '保存文件')
-        if file_path in self.tab_fileNames:
+        if file_path in self.tab_fileNames and file_path != self.tab_widget.tabText(self.tab_widget.currentIndex()):
             QMessageBox.warning(self, '提示', '文件已打开，无法保存')
         elif file_path:
             with open(file_path, mode='w', encoding='utf-8') as save_file:
@@ -112,7 +112,14 @@ class MyMain(ThonnyMainWindow):
             self.tab_fileNames[self.tab_widget.currentIndex()] = file_path
 
     def reload_file(self):
-        pass
+        current_file_name = self.tab_widget.tabText(self.tab_widget.currentIndex())
+        current_content = self.tab_objects[self.tab_widget.currentIndex()].text()
+        if is_different(current_file_name, current_content):
+            reply = QMessageBox.information(self, '提示', '文件已被修改，是否更新？',
+                                            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                                            QMessageBox.StandardButton.No)
+            if reply == QMessageBox.StandardButton.Yes:
+                self.load_file(current_file_name)
 
 
 if __name__ == '__main__':
